@@ -1,8 +1,8 @@
 # Problem 4 of Chapter 5 "Linear Regression"
 '''
 First we generate x1 & y data with y=2*x1+noise
-Then for noise level a=0.01, 0.1, 1, we generate x2 based on x1
-For each a, we apply 3 ridge regression models with lambda=0, 0.01, 0.1
+Then for noise level a=0.01, 0.1, 1, we generate 3 differently perturbed x2 based on x1
+For each a & x2, we apply 3 ridge regression models with lambda=0, 0.01, 0.1
 '''
 
 import numpy as np
@@ -41,8 +41,14 @@ for a in (0.01,0.1,1):
     
     for i in range(3):
 
-        x2 = x1+a*np.random.rand(10,1)
+        x2 = x1+a*np.random.rand(10,1) # generate x2
+
+        # evaluate how ill-conditioned the problem is
         rho = np.corrcoef(x1,x2,rowvar=False)[0,1]
+        X = np.hstack((np.ones((10,1)),x1,x2))
+        eigenvals = np.linalg.eigvals(X.T@X)
+        print("Under noise level a=%.2f, rho=%.5f, eigenvalues are"%(a,rho))
+        print(eigenvals)
 
         for j in range(3):
 
@@ -71,6 +77,3 @@ for a in (0.01,0.1,1):
 
     plt.show()
     
-
-
-

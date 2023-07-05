@@ -36,8 +36,11 @@ def LS_Regression(
         x_grid = np.linspace(np.min(x)-1,np.max(x)+1,NUM).reshape(-1,1)
         fig1 = plt.figure(1).add_subplot(111)
         fig1.scatter(x,y,facecolors='none',edgecolors='blue',label=r"$y$") # data points
-        fig1.plot(x_grid,np.matmul(np.hstack((np.ones((NUM,1)),x_grid)),w),label=r"$\hat{y}$") # regression curve
-        fig1.plot(x_grid,y_bar*np.ones((NUM,1)),label=r"$\bar{y}$",linestyle='dashed') # average
+        fig1.plot(x_grid,np.matmul(np.hstack((np.ones((NUM,1)),x_grid)),w),
+                  label=r"$\hat{y}$") # regression curve
+        fig1.plot(x_grid,y_bar*np.ones((NUM,1)),
+                  label=r"$\bar{y}$",
+                  linestyle='dashed') # average
         fig1.legend()
         fig1.set_title("Ch05_3a")
         
@@ -53,12 +56,16 @@ def LS_Regression(
         z = np.empty((NUM, NUM))
         for i in range(NUM):
             for j in range(NUM):
-                z[i, j] = w[0,0]+w[1,0]*x1[i,0]+w[2,0]*x2[j,0]
+                z[i, j] = w[0,0]+w[1,0]*x_grid[i,j]+w[2,0]*y_grid[i,j]
         fig2 = plt.figure(2).add_subplot(projection='3d')
-        fig2.scatter(x1,x2,y,facecolors='none',edgecolors='blue',label=r"$y$") # data points
-        fig2.plot_surface(x_grid,y_grid,z,antialiased=False)
-        # plt.plot(x_grid,np.matmul(np.hstack((np.ones((NUM,1)),x_grid)),w),label=r"$\hat{y}$") # regression curve
-        # plt.plot(x_grid,y_bar*np.ones((NUM,1)),label=r"$\bar{y}$",linestyle='dashed') # average
+        fig2.scatter(x1,x2,y,
+                     facecolors='none',
+                     edgecolors='blue',
+                     lw=1,
+                     label=r"$y$") # data points
+        fig2.plot_surface(x_grid,y_grid,z,
+                          cmap='viridis',
+                          alpha=0.8)
         fig2.legend()
         fig2.set_xlabel(r'$x_1$')
         fig2.set_ylabel(r'$x_2$')

@@ -17,7 +17,7 @@ def Ridge_Regression(
     d = x.shape[1]
 
     X = np.hstack((np.ones((N,1)),x)) # augmented matrix of x
-    Xinv = np.linalg.inv(X.T@X+lam*np.eye(d+1))@X.T
+    Xinv = np.linalg.inv(X.T@X+lam*np.eye(d+1))@X.T  # pseudo-inverse modified by weight decay
     w = Xinv@y
 
     y_bar = np.average(y)
@@ -43,7 +43,7 @@ for a in (0.01,0.1,1):
 
         x2 = x1+a*np.random.rand(10,1) # generate x2
 
-        # evaluate how ill-conditioned the problem is
+        # evaluate how ill-conditioned the problem is through rho and eigenvalues
         rho = np.corrcoef(x1,x2,rowvar=False)[0,1]
         X = np.hstack((np.ones((10,1)),x1,x2))
         eigenvals = np.linalg.eigvals(X.T@X)
@@ -73,7 +73,7 @@ for a in (0.01,0.1,1):
             
             ax.set_title(r"$\lambda$=%.2f,$R^2$=%.4f"%(lam,R_squared)+"\n"+r"$\mathbf{w}$=(%.4f,%.4f,%.4f)"%(w[0,0],w[1,0],w[2,0]),
                          y=0.92,
-                         fontsize='x-small')
+                         fontsize='x-small') # display the parameters
 
     plt.show()
     

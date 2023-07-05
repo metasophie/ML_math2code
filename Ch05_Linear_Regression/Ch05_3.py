@@ -15,7 +15,7 @@ def LS_Regression(
 
     X = np.hstack((np.ones((N,1)),x)) # augmented matrix of x
     PInvX = np.linalg.pinv(X)     # pseudo-inverse of X
-    w = np.matmul(PInvX,y)
+    w = np.matmul(PInvX,y)    
 
     y_bar = np.average(y)
     TSS = np.sum(np.power(y-y_bar,2))
@@ -28,7 +28,7 @@ def LS_Regression(
     print(w)
     print(r"TSS=%.4f ESS=%.4f RSS=%.4f R2=%.4f"%(TSS,ESS,RSS,R_squared))
     if d==1:
-        rho = np.corrcoef(x,y,rowvar=False)[0,1]
+        rho = np.corrcoef(x,y,rowvar=False)[0,1] # correlation coefficient rho
         print(r"In this special case where d=1, rho=%.4f"%rho)
 
         print(">>> Plot the 1D regression curve")
@@ -40,7 +40,7 @@ def LS_Regression(
                   label=r"$\hat{y}$") # regression curve
         fig1.plot(x_grid,y_bar*np.ones((NUM,1)),
                   label=r"$\bar{y}$",
-                  linestyle='dashed') # average
+                  linestyle='dashed') # average y_bar
         fig1.legend()
         fig1.set_title("Ch05_3a")
         
@@ -65,14 +65,16 @@ def LS_Regression(
                      label=r"$y$") # data points
         fig2.plot_surface(x_grid,y_grid,z,
                           cmap='viridis',
-                          alpha=0.8)
+                          alpha=0.8) # y_hat surface
         fig2.legend()
         fig2.set_xlabel(r'$x_1$')
         fig2.set_ylabel(r'$x_2$')
         fig2.set_title("Ch05_3b")
         plt.show()
 
-
+'''
+apply the algorithm to the datasets
+'''
 data1 = np.loadtxt("dataLS1.txt")
 # first need to convert x,y from 1D to 2D
 LS_Regression(x=data1[:,0].reshape(-1,1),y=data1[:,1].reshape(-1,1))

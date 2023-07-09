@@ -1,6 +1,7 @@
 # Problem 1 of Chapter 7 "Logistic and Softmax Regression"
 '''
-requires the package scikit-learn for plotting the confusion matrix
+Requires the package scikit-learn for plotting the confusion matrix
+For GD & NR each generates 2 figures, confusion matrix and classified scatter
 '''
 import numpy as np
 import matplotlib.pyplot as plt
@@ -35,7 +36,7 @@ def Logistic_GD(
     # assess the model performance
     y_pred = sigmoid(X@w)>0.5
     y_true = y.astype(int)
-    accuracy = np.sum(y_pred == y_true)/float(N)
+    accuracy = np.sum(y_pred == y_true)/N
     print("Accuracy of gradient descent is %.4f"%accuracy)
 
     cm = confusion_matrix(y_true,y_pred)    # generate confusion matrix
@@ -44,6 +45,23 @@ def Logistic_GD(
     disp.plot(cmap=plt.cm.Blues)
     plt.title("Confusion matrix by GD regression")
     plt.show()
+
+    fig, ax = plt.subplots()
+    for i in range(N):  # plot the data points
+        if y_true[i,0] == 1:
+            point_1 = ax.scatter(x[i,0],x[i,1],s=10,color='red',label="class 1")
+        if y_true[i,0] == 0:
+            point_0 = ax.scatter(x[i,0],x[i,1],s=10,color='blue',label="class -1")
+    # plot the dividing line
+    x_min = np.min(x[:,0])
+    x_max = np.max(x[:,0])
+    x1_grid = np.linspace(x_min,x_max,100)
+    x2_grid = -(x1_grid*w[1,0]+w[0,0])/w[2,0]
+    ax.plot(x1_grid,x2_grid,color='black')
+    ax.legend(handles=[point_1,point_0])
+    ax.set_title("GD logistic regression")
+    fig.show()
+
 
 def Logistic_NR(
         x,      # N*d input matrix
@@ -74,19 +92,36 @@ def Logistic_NR(
     # assess the model performance
     y_pred = sigmoid(X@w)>0.5
     y_true = y.astype(int)
-    accuracy = np.sum(y_pred == y_true)/float(N)
-    print("Accuracy of gradient descent is %.4f"%accuracy)
+    accuracy = np.sum(y_pred == y_true)/N
+    print("Accuracy of Newton-Raphson is %.4f"%accuracy)
 
     cm = confusion_matrix(y_true,y_pred)    # generate confusion matrix
     print("Confusion matrix is:\n",cm)
     disp = ConfusionMatrixDisplay(confusion_matrix=cm)
     disp.plot(cmap=plt.cm.Blues)
-    plt.title("Confusion matrix by GD regression")
+    plt.title("Confusion matrix by NR regression")
+    plt.show()
+
+    fig, ax = plt.subplots()
+    for i in range(N):  # plot the data points
+        if y_true[i,0] == 1:
+            point_1 = ax.scatter(x[i,0],x[i,1],s=10,color='red',label="class 1")
+        if y_true[i,0] == 0:
+            point_0 = ax.scatter(x[i,0],x[i,1],s=10,color='blue',label="class -1")
+    # plot the dividing line
+    x_min = np.min(x[:,0])
+    x_max = np.max(x[:,0])
+    x1_grid = np.linspace(x_min,x_max,100)
+    x2_grid = -(x1_grid*w[1,0]+w[0,0])/w[2,0]
+    ax.plot(x1_grid,x2_grid,color='black')
+    ax.legend(handles=[point_1,point_0])
+    ax.set_title("NR logistic regression")
     plt.show()
 
 data = np.loadtxt("./2ClassData.txt")
 x = data[:,:2]
 y = data[:,2].reshape(-1,1).astype(int) == 1
 
+Logistic_GD(x,y)
 Logistic_NR(x,y)
 

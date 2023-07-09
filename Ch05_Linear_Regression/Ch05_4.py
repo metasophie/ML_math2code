@@ -23,8 +23,8 @@ def Ridge_Regression(
     y_bar = np.average(y)
     TSS = np.sum(np.power(y-y_bar,2))
     y_hat = X@w
-    ESS = np.sum(np.power(y_hat-y_bar,2))
-    R_squared = ESS/TSS
+    RSS = np.sum(np.power(y_hat-y,2))
+    R_squared = 1-RSS/TSS
 
     return (w,R_squared)
 
@@ -47,7 +47,7 @@ for a in (0.01,0.1,1):
         rho = np.corrcoef(x1,x2,rowvar=False)[0,1]
         X = np.hstack((np.ones((10,1)),x1,x2))
         eigenvals = np.linalg.eigvals(X.T@X)
-        print("Under noise level a=%.2f, rho=%.5f, eigenvalues are"%(a,rho))
+        print("Under noise level a=%.2f, rho=%.6f, eigenvalues are"%(a,rho))
         print(eigenvals)
 
         for j in range(3):

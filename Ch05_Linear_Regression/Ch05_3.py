@@ -18,10 +18,10 @@ def LS_Regression(
     w = np.matmul(PInvX,y)    
 
     y_bar = np.average(y)
-    TSS = np.sum(np.power(y-y_bar,2))
-    y_hat = np.matmul(X,w)
-    ESS = np.sum(np.power(y_hat-y_bar,2))
-    RSS = TSS-ESS
+    TSS = np.sum(np.power(y-y_bar,2))   # total sum of squares
+    y_hat = np.matmul(X,w)              
+    ESS = np.sum(np.power(y_hat-y_bar,2))   # explained sum of squares
+    RSS = TSS-ESS                       # residual sum of squares
     R_squared = ESS/TSS
 
     print(">>> Results of regression: \n w=")
